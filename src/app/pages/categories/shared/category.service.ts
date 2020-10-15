@@ -10,7 +10,7 @@ import { Observable, throwError } from 'rxjs';
 })
 export class CategoryService {
 
-    private apiPath: 'api/categories';
+  private apiPath: 'api/categories';
 
   constructor(private http: HttpClient) { }
 
@@ -26,6 +26,29 @@ export class CategoryService {
     return this.http.get<Category>(url).pipe(
       catchError(this.handleError),
       map(this.jsonDataToCategory)
+    );
+  }
+
+  create(category: Category): Observable<Category> {
+    return this.http.post<Category>(this.apiPath, category).pipe(
+      catchError(this.handleError),
+      map(this.jsonDataToCategory)
+    );
+  }
+
+  update(category: Category): Observable<Category> {
+    const url = `${this.apiPath}/${category.id}`
+    return this.http.put<Category>(url, category).pipe(
+      catchError(this.handleError),
+      map(() => category)
+    );
+  }
+
+  delete(id: number): Observable<Category> {
+    const url = `${this.apiPath}/${id}`;
+    return this.http.delete<Category>(url).pipe(
+      catchError(this.handleError),
+      map(() => null)
     );
   }
 
