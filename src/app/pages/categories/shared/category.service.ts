@@ -10,12 +10,12 @@ import { Observable, throwError } from 'rxjs';
 })
 export class CategoryService {
 
-  private apiPath: 'api/categories';
+  private apiPath = 'api/categories';
 
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Category[]> {
-    return this.http.get(this.apiPath).pipe(
+    return this.http.get<Category[]>(this.apiPath).pipe(
       catchError(this.handleError),
       map(this.jsonDataToCategories)
     );
@@ -37,7 +37,7 @@ export class CategoryService {
   }
 
   update(category: Category): Observable<Category> {
-    const url = `${this.apiPath}/${category.id}`
+    const url = `${this.apiPath}/${category.id}`;
     return this.http.put<Category>(url, category).pipe(
       catchError(this.handleError),
       map(() => category)
